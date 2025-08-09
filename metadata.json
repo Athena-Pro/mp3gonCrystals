@@ -1,0 +1,8 @@
+{
+  "name": "Sonic Geometer",
+  "description": "An experimental web application that applies geometric transformations to sound. Upload a source and target audio file or use your microphone in real-time to map amplitude envelopes, spectral shapes, and more, creating new, unique soundscapes. Features an AI-powered naming assistant to spark creativity.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "prompt": ""
+}
