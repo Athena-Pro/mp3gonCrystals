@@ -1,1 +1,45 @@
-<PASTE THE YAML ABOVE>
+name: ci
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  diagnose-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Show env proxy-related vars
+        run: 'env | grep -i -E "proxy|npm_config" || true'
+
+      - name: Show npm config
+        run: npm config list -l
+
+      - name: Network reachability (DNS + TLS)
+        run: 'getent hosts registry.npmjs.org && curl -I https://registry.npmjs.org/'
+
+      - name: npm ping
+        run: npm ping
+
+      - name: Clean install
+        run: npm ci
+
+      - name: Build (Vite)
+        run: npm run build --if-present
+
+      - name: Analyze bundle (optional)
+        run: 'npx --yes source-map-explorer "dist/assets/*.js" --html report.html || true'
+
+      - name: Upload report artifact (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-report
+          path: report.html
+          if-no-files-found: ignore
