@@ -118,10 +118,16 @@ export async function sonifyGeometry(
             }
         }
         if (maxAmp > 0.01) {
-            gainNode.gain.value = 0.98 / maxAmp;
+            const norm = 0.98 / maxAmp;
+            for (let chan = 0; chan < renderedBuffer.numberOfChannels; chan++) {
+                const data = renderedBuffer.getChannelData(chan);
+                for (let i = 0; i < data.length; i++) {
+                    data[i] *= norm;
+                }
+            }
         }
 
-        return await offlineCtx.startRendering();
+        return renderedBuffer;
 
     } catch(e) {
         console.error("Sonification failed:", e);
