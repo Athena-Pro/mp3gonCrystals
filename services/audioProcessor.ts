@@ -7,6 +7,9 @@ import { bufferToWav } from './wavEncoder';
 // A self-contained, simple Radix-2 FFT implementation.
 const fftCache = new Map();
 export function getFFT(size: number) {
+    if (size <= 0 || (size & (size - 1)) !== 0) {
+        throw new Error('FFT size must be a power of two');
+    }
     if (fftCache.has(size)) return fftCache.get(size);
     
     const bitReverse = new Uint32Array(size);
@@ -806,6 +809,23 @@ export function runAudioProcessorTests() {
     assert(Math.abs(computeSafeVoiceGain(1) - 1) < 0.001, "Safe gain for 1 voice is 1.");
     assert(Math.abs(computeSafeVoiceGain(2) - 0.707) < 0.01, "Safe gain for 2 voices is ~0.707 (-3dB).");
     assert(Math.abs(computeSafeVoiceGain(4) - 0.5) < 0.001, "Safe gain for 4 voices is 0.5 (-6dB).");
+
+    // Test: getFFT rejects invalid sizes
+    let threw = false;
+    try {
+        getFFT(300);
+    } catch {
+        threw = true;
+    }
+    assert(threw, "getFFT throws for non-power-of-two size.");
+
+    threw = false;
+    try {
+        getFFT(0);
+    } catch {
+        threw = true;
+    }
+    assert(threw, "getFFT throws for non-positive size.");
     
     console.log("Tests complete.");
     console.groupEnd();

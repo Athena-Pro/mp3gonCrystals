@@ -16,10 +16,13 @@ export default defineConfig(({ mode }) => {
         }
       },
       test: {
+ codex/add-test-coverage-configuration-for-vite
         environment: 'jsdom',
         setupFiles: [],
         globals: true,
         coverage: { reporter: ['text', 'html'] }
+        environment: 'jsdom'
+ main
       }
     };
 });
