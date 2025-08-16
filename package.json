@@ -7,23 +7,54 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+ codex/add-testing-dependencies-and-starter-test
     "test": "vitest"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ci": "vitest run --coverage"
+ main
   },
   "dependencies": {
+    "@google/genai": "^1.14.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "@google/genai": "^1.12.0",
-    "three": "0.167.0"
+    "source-map-explorer": "^2.5.3",
+    "three": "0.179.1"
   },
   "devDependencies": {
+ codex/update-test-scripts-for-vitest
     "@types/node": "^22.14.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
+ codex/add-testing-dependencies-and-starter-test
     "vitest": "*",
     "@vitest/coverage-v8": "*",
     "jsdom": "*",
     "@testing-library/react": "*",
     "@testing-library/user-event": "*",
     "@testing-library/jest-dom": "*"
+    "vitest": "^2.1.4"
+ main
   }
+    "@types/node": "^24.3.0",
+    "typescript": "~5.9.2",
+    "vite": "^7.1.2"
+  },
+  "description": "An experimental web application for exploring geometric and algorithmic sound transformation. Sonic Geometer allows you to deconstruct and recombine audio files in unique ways, creating entirely new sonic textures and soundscapes.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Athena-Pro/mp3gonCrystals.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20 <21"
+  },
+  "bugs": {
+    "url": "https://github.com/Athena-Pro/mp3gonCrystals/issues"
+  },
+  "homepage": "https://github.com/Athena-Pro/mp3gonCrystals#readme"
+ main
 }
