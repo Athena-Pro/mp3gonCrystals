@@ -18,7 +18,7 @@
   "devDependencies": {
     "@types/node": "^22.14.0",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "vite": "^7.1.2"
   },
   "description": "An experimental web application for exploring geometric and algorithmic sound transformation. Sonic Geometer allows you to deconstruct and recombine audio files in unique ways, creating entirely new sonic textures and soundscapes.",
   "main": "index.js",
