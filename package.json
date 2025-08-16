@@ -7,9 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+ codex/add-testing-dependencies-and-starter-test
+    "test": "vitest"
     "test": "vitest",
     "test:run": "vitest run",
     "test:ci": "vitest run --coverage"
+ main
   },
   "dependencies": {
     "@google/genai": "^1.14.0",
@@ -23,7 +26,15 @@
     "@types/node": "^22.14.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
+ codex/add-testing-dependencies-and-starter-test
+    "vitest": "*",
+    "@vitest/coverage-v8": "*",
+    "jsdom": "*",
+    "@testing-library/react": "*",
+    "@testing-library/user-event": "*",
+    "@testing-library/jest-dom": "*"
     "vitest": "^2.1.4"
+ main
   }
     "@types/node": "^24.3.0",
     "typescript": "~5.9.2",
