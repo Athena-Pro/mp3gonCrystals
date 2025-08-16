@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import type { AudioData } from '../types';
 import MP3gonVisualizer from './MP3gonVisualizer';
 import { IconUpload, IconFileMusic, IconX, IconExpand } from './Icons';
@@ -6,7 +6,7 @@ import { IconUpload, IconFileMusic, IconX, IconExpand } from './Icons';
 interface AudioUploaderProps {
   id: string;
   title: string;
-  onUpload: (audioData: AudioData) => void;
+  onUpload: (audioData: AudioData | null) => void;
   audioData: AudioData | null;
   onOpenVisualizer?: (audioData: AudioData) => void;
 }
@@ -17,6 +17,7 @@ export default function AudioUploader({ id, title, onUpload, audioData, onOpenVi
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const objectUrlRef = useRef<string | null>(null);
 
   const processFile = useCallback(async (file: File) => {
     if (!file) return;
@@ -33,10 +34,16 @@ export default function AudioUploader({ id, title, onUpload, audioData, onOpenVi
       const arrayBuffer = await file.arrayBuffer();
       const decodedBuffer = await audioContext.decodeAudioData(arrayBuffer);
       
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+      }
+      const objectUrl = URL.createObjectURL(file);
+      objectUrlRef.current = objectUrl;
+
       onUpload({
         name: file.name,
         buffer: decodedBuffer,
-        url: URL.createObjectURL(file),
+        url: objectUrl,
       });
     } catch (e) {
       console.error('Error decoding audio data:', e);
@@ -66,11 +73,23 @@ export default function AudioUploader({ id, title, onUpload, audioData, onOpenVi
   };
 
   const handleRemove = () => {
-    onUpload(null!); // Parent component will handle null
-    if(fileInputRef.current) {
-        fileInputRef.current.value = '';
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
+    onUpload(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+      }
+    };
+  }, []);
 
   const titleComponent = title ? <h3 className="text-xl font-bold text-center text-cyan-400 mb-4">{title}</h3> : null;
 
