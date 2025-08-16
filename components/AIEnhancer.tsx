@@ -29,7 +29,11 @@ export default function AIEnhancer({ sourceName, targetName, transformation, mor
       setNames(result);
     } catch (err) {
       console.error('Gemini API error:', err);
-      setError('Could not generate names. The AI might be sleeping.');
+      if (err instanceof Error && err.message === 'Gemini API client not configured.') {
+        setError('AI features are disabled. Please set the Gemini API key.');
+      } else {
+        setError('Could not generate names. The AI might be sleeping.');
+      }
     } finally {
       setIsLoading(false);
     }
