@@ -11,12 +11,11 @@ interface AudioUploaderProps {
   onOpenVisualizer?: (audioData: AudioData) => void;
 }
 
-const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-
 export default function AudioUploader({ id, title, onUpload, audioData, onOpenVisualizer }: AudioUploaderProps): React.ReactNode {
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
   const processFile = useCallback(async (file: File) => {
     if (!file) return;
@@ -30,9 +29,12 @@ export default function AudioUploader({ id, title, onUpload, audioData, onOpenVi
     setError(null);
 
     try {
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
       const arrayBuffer = await file.arrayBuffer();
-      const decodedBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      
+      const decodedBuffer = await audioCtxRef.current!.decodeAudioData(arrayBuffer);
+
       onUpload({
         name: file.name,
         buffer: decodedBuffer,
