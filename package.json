@@ -29,6 +29,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=20 <21"
+  },
   "bugs": {
     "url": "https://github.com/Athena-Pro/mp3gonCrystals/issues"
   },
