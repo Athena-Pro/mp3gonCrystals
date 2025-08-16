@@ -34,6 +34,14 @@ jobs:
       - name: Build (Vite)
         run: npm run build --if-present
 
+      - name: SBOM (CycloneDX)
+        run: npx --yes @cyclonedx/cyclonedx-npm --output-file sbom.json
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json
+
       - name: Analyze bundle (optional)
         run: 'npx --yes source-map-explorer "dist/assets/*.js" --html report.html || true'
 
