@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+ codex/add-test-coverage-configuration-for-vite
+    "test": "vitest"
  codex/add-testing-dependencies-and-starter-test
     "test": "vitest"
     "test": "vitest",
@@ -26,6 +28,10 @@
     "@types/node": "^22.14.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
+codex/add-test-coverage-configuration-for-vite
+    "@vitejs/plugin-react": "^4.3.2",
+    "vitest": "^2.1.4",
+    "jsdom": "^25.0.1"
  codex/add-testing-dependencies-and-starter-test
     "vitest": "*",
     "@vitest/coverage-v8": "*",
