@@ -9,7 +9,7 @@ if (!API_KEY) {
   console.warn("Gemini API key not found. AI features will be disabled.");
 }
 
-const ai = new GoogleGenAI({ apiKey: API_KEY! });
+const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
 
 const nameGenerationSchema = {
   type: Type.OBJECT,
@@ -33,8 +33,8 @@ export async function generateSoundName(
   morphA?: TransformationType,
   morphB?: TransformationType
 ): Promise<string[]> {
-  if (!API_KEY) {
-    throw new Error("API key is not configured.");
+  if (!ai) {
+    throw new Error("Gemini API client not configured.");
   }
   
   let transformationDescription = `The transformation technique used was: "${transformation}".`;
