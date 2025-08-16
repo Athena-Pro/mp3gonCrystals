@@ -147,6 +147,7 @@ class SonificationManager extends EventTarget {
     private masterBus: DynamicsCompressorNode;
     private bufferSource: AudioBufferSourceNode | null = null;
     private animationFrameId: number | null = null;
+    private playStartTime: number | null = null;
 
     constructor() {
         super();
@@ -186,11 +187,10 @@ class SonificationManager extends EventTarget {
     public getState(): SonificationState {
         return this.state;
     }
-    
+
     private pollTime = () => {
-        if(this.bufferSource) {
-            // A more accurate way to get time for a buffer source
-            const elapsedTime = this.audioContext.currentTime - (this.bufferSource as any)._startTime;
+        if(this.bufferSource && this.playStartTime !== null) {
+            const elapsedTime = this.audioContext.currentTime - this.playStartTime;
             this.setState({ currentTime: Math.min(elapsedTime, this.state.duration) });
         }
         if (this.state.isPlaying) {
@@ -205,6 +205,7 @@ class SonificationManager extends EventTarget {
             this.animationFrameId = null;
         }
         this.bufferSource = null;
+        this.playStartTime = null;
     }
 
     private cleanupAudio() {
@@ -216,6 +217,7 @@ class SonificationManager extends EventTarget {
             cancelAnimationFrame(this.animationFrameId);
             this.animationFrameId = null;
         }
+        this.playStartTime = null;
         this.setState(this.getInitialState());
     }
 
@@ -246,8 +248,7 @@ class SonificationManager extends EventTarget {
                 this.bufferSource.buffer = audioBuffer;
                 this.bufferSource.connect(this.masterBus);
                 this.bufferSource.onended = this.onEnded;
-                
-                (this.bufferSource as any)._startTime = this.audioContext.currentTime;
+                this.playStartTime = this.audioContext.currentTime;
                 this.bufferSource.start(0);
 
                 this.setState({ 
