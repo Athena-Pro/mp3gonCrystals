@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -17,6 +18,12 @@
   "devDependencies": {
     "@types/node": "^22.14.0",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "vite": "^6.2.0",
+    "vitest": "*",
+    "@vitest/coverage-v8": "*",
+    "jsdom": "*",
+    "@testing-library/react": "*",
+    "@testing-library/user-event": "*",
+    "@testing-library/jest-dom": "*"
   }
 }
