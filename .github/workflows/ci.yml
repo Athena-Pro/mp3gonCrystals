@@ -1,4 +1,8 @@
 name: ci
+permissions:
+  contents: read
+  actions: none
+  checks: write
 on:
   push:
     branches: [ "main" ]
@@ -7,14 +11,19 @@ on:
 jobs:
   diagnose-and-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: npm
 
       - name: Show env proxy-related vars
         run: 'env | grep -i -E "proxy|npm_config" || true'
@@ -29,7 +38,7 @@ jobs:
         run: npm ping
 
       - name: Clean install
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Build (Vite)
         run: npm run build --if-present
